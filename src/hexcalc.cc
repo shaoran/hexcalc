@@ -45,11 +45,71 @@ using namespace exceptions;
 
 #define isbindigit(ch) ((ch == '0') || (ch == '1'))
 
-#define __cmd(str) (string(BOLD) + C_HELP_CMD + str + DEFF).c_str()
+static
+void __free_cache_map(std::map<std::string, const char*>& map)
+{
+    std::map<std::string, const char*>::iterator i;
+    for(i = map.begin(); i != map.end(); ++i)
+        delete[] i->second;
 
-#define __arg(str) (string(ULNE) + C_HELP_ARG + str + DEFF).c_str()
+    map.clear();
+}
 
-#define __title(str) (string(BOLD) + C_HELP_TITLE + str + DEFF).c_str()
+static
+const char *__get_cached_val(std::map<std::string, const char*>& cache, std::string &key, const char *style, const char *mod)
+{
+    if(key == "__FREE__CACHE__")
+    {
+        __free_cache_map(cache);
+        return NULL;
+    }
+
+    if(cache.find(key) == cache.end())
+    {
+        char *buffer = new char[30 + key.length() + 1];
+        sprintf(buffer, "%s%s%s%s", style, mod, key.c_str(), DEFF);
+        cache[key] = buffer;
+    }
+
+    return cache[key];
+}
+
+
+static
+const char *__cmd(std::string cmd)
+{
+    static std::map<std::string, const char*> cmd_map;
+    return __get_cached_val(cmd_map, cmd, BOLD, C_HELP_CMD);
+}
+
+static
+const char *__cmd(const char *cmd)
+{
+    std::string v = std::string(cmd);
+    return __cmd(v);
+}
+
+static
+const char *__cmd(char cmd)
+{
+    char cmd2[2] = { cmd, 0 };
+    std::string v = std::string(cmd2);
+    return __cmd(v);
+}
+
+
+const char *__arg(std::string arg)
+{
+    static std::map<std::string, const char*> arg_map;
+    return __get_cached_val(arg_map, arg, ULNE, C_HELP_ARG);
+}
+
+
+const char *__title(std::string title)
+{
+    static std::map<std::string, const char*> title_map;
+    return __get_cached_val(title_map, title, BOLD, C_HELP_TITLE);
+}
 
 #define __print_errmsg catch(signal e){__error << errmsg[e];}
 
@@ -354,6 +414,9 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
             }else{ // EOF_COMMAND
                 cout << endl;
                 delete RI;
+                __cmd("__FREE__CACHE__");
+                __arg("__FREE__CACHE__");
+                __title("__FREE__CACHE__");
                 exit(0);
             }
         }//catch
@@ -409,6 +472,9 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
 
         case QUIT:
             delete RI;
+            __cmd("__FREE__CACHE__");
+            __arg("__FREE__CACHE__");
+            __title("__FREE__CACHE__");
             exit(0);
 
         case HELP:
@@ -666,6 +732,10 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
 
         }//switch
     }//while (main loop)
+
+    __cmd("__FREE__CACHE__");
+    __arg("__FREE__CACHE__");
+    __title("__FREE__CACHE__");
 }//main
 
 /* aczutro ************************************************************* end */
