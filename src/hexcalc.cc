@@ -1,4 +1,5 @@
 /* aczutro -*- c-basic-offset:4 -*-
+ * vim: set sw=4 ts=4 sts=4 expandtab :
  *
  * hexcalc - a handy hex calculator and register contents visualiser
  *           for assembly programmers
