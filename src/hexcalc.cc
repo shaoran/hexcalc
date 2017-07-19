@@ -31,7 +31,6 @@
 #include <core.hh>
 
 using namespace std;
-using namespace faces;
 using namespace exceptions;
 
 
@@ -45,11 +44,47 @@ using namespace exceptions;
 
 #define isbindigit(ch) ((ch == '0') || (ch == '1'))
 
-#define __cmd(str) (string(BOLD) + C_HELP_CMD + str + DEFF).c_str()
+#define QUIT          "q"
+#define HELP          "h"
+#define VERSION       "v"
+#define PRINT         "p"
+#define INDICES       "I"
+#define HILITE        "l"
+#define PERM_HILITE   "L"
+#define WIDTH         "w"
+#define INVERT        "i"
+#define REPLACE       "="
+#define UNDO          "u"
+#define REDO          "r"
+#define HISTORY_SIZE  "U"
+#define PRINT_HISTORY "H"
+#define SPLIT_FIELDS  "s"
+#define SPLIT_REPEAT  "S"
+#define LOAD_SPECS    "R"
 
-#define __arg(str) (string(ULNE) + C_HELP_ARG + str + DEFF).c_str()
+#define CMD_QUIT          QUIT[0]
+#define CMD_HELP          HELP[0]
+#define CMD_VERSION       VERSION[0]
+#define CMD_PRINT         PRINT[0]
+#define CMD_INDICES       INDICES[0]
+#define CMD_HILITE        HILITE[0]
+#define CMD_PERM_HILITE   PERM_HILITE[0]
+#define CMD_WIDTH         WIDTH[0]
+#define CMD_INVERT        INVERT[0]
+#define CMD_REPLACE       REPLACE[0]
+#define CMD_UNDO          UNDO[0]
+#define CMD_REDO          REDO[0]
+#define CMD_HISTORY_SIZE  HISTORY_SIZE[0]
+#define CMD_PRINT_HISTORY PRINT_HISTORY[0]
+#define CMD_SPLIT_FIELDS  SPLIT_FIELDS[0]
+#define CMD_SPLIT_REPEAT  SPLIT_REPEAT[0]
+#define CMD_LOAD_SPECS    LOAD_SPECS  [0]
 
-#define __title(str) (string(BOLD) + C_HELP_TITLE + str + DEFF).c_str()
+#define __cmd(str) BOLD C_HELP_CMD str DEFF
+
+#define __arg(str) ULNE C_HELP_ARG str DEFF
+
+#define __title(str) BOLD C_HELP_TITLE str DEFF
 
 #define __print_errmsg catch(signal e){__error << errmsg[e];}
 
@@ -64,23 +99,6 @@ int main(int argc, char *argv[]){
 
     /* command ids */
     const char SELF_INSERT   = 0;
-    const char QUIT          = 'q';
-    const char HELP          = 'h';
-    const char VERSION       = 'v';
-    const char PRINT         = 'p';
-    const char INDICES       = 'I';
-    const char HILITE        = 'l';
-    const char PERM_HILITE   = 'L';
-    const char WIDTH         = 'w';
-    const char INVERT        = 'i';
-    const char REPLACE       = '=';
-    const char UNDO          = 'u';
-    const char REDO          = 'r';
-    const char HISTORY_SIZE  = 'U';
-    const char PRINT_HISTORY = 'H';
-    const char SPLIT_FIELDS  = 's';
-    const char SPLIT_REPEAT  = 'S';
-    const char LOAD_SPECS    = 'R';
 
     /* strings for help printing */
     string main_help;
@@ -161,10 +179,10 @@ int main(int argc, char *argv[]){
         sprintf(help_buffer,
                 "%s  Print the current value of the accumulator.",
                 __print);
-        help_on[PRINT] = help_buffer;
+        help_on[CMD_PRINT] = help_buffer;
 
         sprintf(help_buffer, "%s  Toggle showing indices.", __indices);
-        help_on[INDICES] = help_buffer;
+        help_on[CMD_INDICES] = help_buffer;
 
         sprintf(help_buffer, "%s %s  Set the accumulator's width to %s hexadecimal digits.\n\
                 If %s is 0, the accumulator will have variable width\n\
@@ -175,7 +193,7 @@ int main(int argc, char *argv[]){
                 __arg("WIDTH"),
                 __arg("WIDTH"),
                 __width);
-        help_on[WIDTH] = help_buffer;
+        help_on[CMD_WIDTH] = help_buffer;
 
         sprintf(help_buffer, "%s %s    Flip bit with index %s.\n\
        %s %s %s  Flip bits %s..%s (or %s..%s).\n\
@@ -187,20 +205,20 @@ int main(int argc, char *argv[]){
                 __invert, __arg("FROM"), __arg("TO"),
                 __arg("FROM"), __arg("TO"), __arg("TO"), __arg("FROM"),
                 __invert);
-        help_on[INVERT] = help_buffer;
+        help_on[CMD_INVERT] = help_buffer;
 
         sprintf(help_buffer,
                 "%s  Undo the last operation that changed the accumulator's permanent\n\
           state.", __undo);
-        help_on[UNDO] = help_buffer;
+        help_on[CMD_UNDO] = help_buffer;
 
         sprintf(help_buffer,
                 "%s  Undo the last undo operation (redo).", __redo);
-        help_on[REDO] = help_buffer;
+        help_on[CMD_REDO] = help_buffer;
 
         sprintf(help_buffer,
                 "%s  Print the current undo history.", __print_history);
-        help_on[PRINT_HISTORY] = help_buffer;
+        help_on[CMD_PRINT_HISTORY] = help_buffer;
 
         sprintf(help_buffer, "%s %s  Set the undo history capacity to %s.\n\
                (Deletes current history!)\n\
@@ -208,7 +226,7 @@ int main(int argc, char *argv[]){
                 __history_size, __arg("SIZE"),
                 __arg("SIZE"),
                 __history_size);
-        help_on[HISTORY_SIZE] = help_buffer;
+        help_on[CMD_HISTORY_SIZE] = help_buffer;
 
         sprintf(help_buffer, "%s %s    Print accumulator and highlight the bit with index %s.\n\
        %s %s %s  Print accumulator and highlight bits %s..%s\n\
@@ -219,7 +237,7 @@ int main(int argc, char *argv[]){
                 __arg("FROM"), __arg("TO"),
                 __arg("TO"), __arg("FROM")
                 );
-        help_on[HILITE] = help_buffer;
+        help_on[CMD_HILITE] = help_buffer;
 
         sprintf(help_buffer, "%s %s    Turn on permanent highlighting of bit with index %s.\n\
        %s %s %s  Turn on permanent highlighting of bits %s..%s\n\
@@ -231,7 +249,7 @@ int main(int argc, char *argv[]){
                 __arg("FROM"), __arg("TO"),
                 __arg("TO"), __arg("FROM"),
                 __perm_hilite);
-        help_on[PERM_HILITE] = help_buffer;
+        help_on[CMD_PERM_HILITE] = help_buffer;
 
         sprintf(help_buffer, "%s { %s | %s%s | %s%s }\n\
               Set value of permanently highlighted bits to %s,\n\
@@ -242,12 +260,12 @@ int main(int argc, char *argv[]){
                 __arg("HEX_NUMBER"),
                 __arg("BIN_NUMBER"), __arg("DEC_NUMBER")
                 );
-        help_on[REPLACE] = help_buffer;
+        help_on[CMD_REPLACE] = help_buffer;
 
         sprintf(help_buffer,
                 "%s  Repeat the last call of the %s command (same register).",
                 __split_repeat, __split_fields);
-        help_on[SPLIT_REPEAT] = help_buffer;
+        help_on[CMD_SPLIT_REPEAT] = help_buffer;
 
         sprintf(help_buffer, "%s %s  Print the value of the individual fields of register\n\
                    %s if that register had the same contents as the\n\
@@ -256,7 +274,7 @@ int main(int argc, char *argv[]){
                 __split_fields, __arg("REGISTER"),
                 __arg("REGISTER"),
                 __split_fields);
-        help_on[SPLIT_FIELDS] = help_buffer;
+        help_on[CMD_SPLIT_FIELDS] = help_buffer;
 
         sprintf(help_buffer, "%s %s  Load register specs from file %s.\n\
                %s must be a plain text file that specifies any number of\n\
@@ -296,7 +314,7 @@ int main(int argc, char *argv[]){
                 __split_fields,
                 C_PROMPT,
                 DEFF );
-        help_on[LOAD_SPECS] = help_buffer;
+        help_on[CMD_LOAD_SPECS] = help_buffer;
 
         sprintf(help_buffer, "%s%shexcalc%s %sv. %s%s\n\
 %sCopyright 2014 - 2017 Alexander Czutro%s\n\
@@ -407,11 +425,11 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
             __print_errmsg;
             break;
 
-        case QUIT:
+        case CMD_QUIT:
             delete RI;
             exit(0);
 
-        case HELP:
+        case CMD_HELP:
             if(R.get_number_of_args()){
                 const char *token = R.get_string(0);
                 if(strlen(token) != 1){
@@ -428,34 +446,34 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
             }//else
             break;
 
-        case PRINT:
+        case CMD_PRINT:
             A.print();
             break;
 
-        case VERSION:
+        case CMD_VERSION:
             cout << version_text;
             break;
 
-        case UNDO:
+        case CMD_UNDO:
             try{
                 A.undo();
                 A.print();
             }__print_errmsg;
             break;
 
-        case REDO:
+        case CMD_REDO:
             try{
                 A.redo();
                 A.print();
             }__print_errmsg;
             break;
 
-        case INDICES:
+        case CMD_INDICES:
             A.toggle_indices();
             A.print();
             break;
 
-        case HILITE:
+        case CMD_HILITE:
             switch(R.get_number_of_args()){
             case 0:
                 __error << "highlighting command expects 1 or 2 arguments";
@@ -479,7 +497,7 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
             }//switch
             break;
 
-        case PERM_HILITE:
+        case CMD_PERM_HILITE:
             switch(R.get_number_of_args()){
             case 0:
                 A.turn_off_perm_hilite();
@@ -506,7 +524,7 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
             }//default
             break;
 
-        case WIDTH:
+        case CMD_WIDTH:
             if(R.get_number_of_args()){
                 try{
                     if(R.is_not_pos_dec(0)){
@@ -524,7 +542,7 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
             }//else
             break;
 
-        case HISTORY_SIZE:
+        case CMD_HISTORY_SIZE:
             if(R.get_number_of_args()){
                 try{
                     if(R.is_not_pos_dec(0)){
@@ -539,11 +557,11 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
             }//else
             break;
 
-        case PRINT_HISTORY:
+        case CMD_PRINT_HISTORY:
             A.print_history();
             break;
 
-        case INVERT:
+        case CMD_INVERT:
             switch(R.get_number_of_args()){
             case 0:
                 A.invert_all();
@@ -570,7 +588,7 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
             }//switch
             break;
 
-        case REPLACE:
+        case CMD_REPLACE:
             if(R.get_number_of_args() == 0){
                 __error << "replacement command expects an argument";
             }else{
@@ -620,7 +638,7 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
             } /* end else */
             break;
 
-        case SPLIT_FIELDS:
+        case CMD_SPLIT_FIELDS:
             if(! RI){
                 __error << "need to load register specs first";
                 break;
@@ -635,7 +653,7 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
             }//else
             break;
 
-        case SPLIT_REPEAT:
+        case CMD_SPLIT_REPEAT:
             if(! RI){
                 __error << "need to load register specs first";
                 break;
@@ -645,7 +663,7 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
             }__print_errmsg;
             break;
 
-        case LOAD_SPECS:
+        case CMD_LOAD_SPECS:
             if(R.get_number_of_args() == 0){
                 __error << "load command expects an argument";
             }else{

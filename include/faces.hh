@@ -26,20 +26,19 @@
 
 /*** namespace with string constants for cout ********************************/
 
-namespace faces{
+#define DEFF "\033[m"
+#define BOLD "\033[1m"
+#define ULNE "\033[4m"
 
-    static const char DEFF[] = "[m";
-    static const char BOLD[] = "[1m";
-    static const char ULNE[] = "[4m";
-
-    static const char RED[]     = "[31m";
-    static const char GREEN[]   = "[32m";
-    static const char YELLOW[]  = "[33m";
-    static const char BLUE[]    = "[34m";
-    static const char MAGENTA[] = "[35m";
-    static const char CYAN[]    = "[36m";
-
-}//faces
+#define DEFF     "\033[m"
+#define BOLD     "\033[1m"
+#define ULNE     "\033[4m"
+#define RED      "\033[31m"
+#define GREEN    "\033[32m"
+#define YELLOW   "\033[33m"
+#define BLUE     "\033[34m"
+#define MAGENTA  "\033[35m"
+#define CYAN     "\033[36m"
 
 #endif
 
