@@ -422,6 +422,20 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
     /* run the main loop, consisiting of
      * printing prompt, reading command, executing, for ever *********/
 
+    if(specs_file != "")
+    {
+        std::cout << "\n\nAutoloading specs file " << specs_file << std::endl;
+        try{
+            RI = new reg_info(specs_file.c_str());
+            A.print_registers(RI);
+            std::cout << std::endl;
+        }//try
+        catch(exception &e){
+            std::cout << "Failed to load specs file: " << e.what() << std::endl;
+            RI = NULL;
+        }//catch
+    }
+
     while(true){
 
         cout << endl;
