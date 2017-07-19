@@ -448,7 +448,7 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
             }else{ // EOF_COMMAND
                 cout << endl;
                 delete RI;
-                exit(0);
+                return 0; // allow the dtors of R to be executed
             }
         }//catch
 
@@ -503,7 +503,7 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
 
         case CMD_QUIT:
             delete RI;
-            exit(0);
+            return 0; // allow the dtors of R to be executed
 
         case CMD_HELP:
             if(R.get_number_of_args()){
