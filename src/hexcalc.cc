@@ -416,7 +416,7 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
 
     /* initialise command line reader and print welcome text *********/
 
-    command_line_reader R(256, 2);
+    command_line_reader R(256, 2, prompt, history_file);
     cout << version_text << endl << endl << intro << flush;
 
     /* run the main loop, consisiting of

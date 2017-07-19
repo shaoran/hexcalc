@@ -1,4 +1,5 @@
 /* aczutro -*- c-basic-offset:4 -*-
+ * vim: set sw=4 ts=4 sts=4 expandtab :
  *
  * hexcalc - a handy hex calculator and register contents visualiser
  *           for assembly programmers
@@ -34,7 +35,7 @@ using namespace std;
 /*** class command_line_reader functions *************************************/
 
 command_line_reader::command_line_reader(uint16_t max_command_line_length,
-                                         uint8_t max_number_of_args){
+                                         uint8_t max_number_of_args, std::string propmt, std::string history){
     command_line_length = max_command_line_length;
     token_size = command_line_length + 1;
     capacity = max_number_of_args;

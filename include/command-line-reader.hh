@@ -42,10 +42,13 @@ class command_line_reader{
     uint16_t __j;
     //char command;
 
+	std::string prompt;
+	std::string history; // readline history file
+
  public:
 
     command_line_reader(uint16_t max_command_line_length,
-                        uint8_t max_number_of_args);
+                        uint8_t max_number_of_args, std::string propmt, std::string history);
 
     ~command_line_reader();
 
