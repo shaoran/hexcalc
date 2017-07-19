@@ -30,6 +30,8 @@
 #include <command-line-reader.hh>
 #include <core.hh>
 
+#include <getopt.h>
+
 using namespace std;
 using namespace exceptions;
 
@@ -88,12 +90,72 @@ using namespace exceptions;
 
 #define __print_errmsg catch(signal e){__error << errmsg[e];}
 
+const char *__cmd_help_str =
+"usage: hexcalc [options] [specs file]\n\
+\n\
+options:\n\
+    -h,   --help            prints this help\n\
+    -i,   --history FILE    loads the input history\n\
+                            from FILE. By default\n\
+                            ~/.hexcalc_history is used\n\
+\n\
+specs file\n\
+    The path of the specs file conatining the register.\n\
+    If this file is passed it will automatically load it.\n\
+    Otherwise you'll have to use the 'R' command to load\n\
+    another specs file.";
 
 /*** main ********************************************************************/
 
 int main(int argc, char *argv[]){
 
     reg_info *RI = NULL;
+
+    int option_index = 0;
+
+    static struct option long_options[] = {
+        {"help",    no_argument,       NULL, 'h'},
+        {"history", required_argument, NULL, 'i'},
+        {NULL,      0,                 NULL, 0},
+    };
+
+    std::string history_file = "";
+    std::string specs_file = "";
+
+    while(1)
+    {
+        int c = getopt_long(argc, argv, "hi:", long_options, &option_index);
+
+        if(c == -1)
+            break;
+
+        switch(c)
+        {
+            case 'h':
+                std::cout << __cmd_help_str << std::endl;
+                return 0;
+                break;
+
+            case 'i':
+                if(optarg == NULL)
+                {
+                    std::cerr << "Invalid -i/--history argument" << std::endl;
+                    std::cerr << __cmd_help_str << std::endl;
+                    return 1;
+                }
+
+                history_file = optarg;
+                break;
+
+            default:
+                std::cerr << "Invalid option" << std::endl;
+                std::cerr << __cmd_help_str << std::endl;
+                return 1;
+        }
+    };
+
+    if(optind < argc)
+        specs_file = argv[optind];
 
     /* set up some constants and declare main variables **************/
 
