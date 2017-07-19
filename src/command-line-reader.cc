@@ -25,9 +25,14 @@
 #include <limits>
 
 #include <cstring>
+#include <cstdlib>
 
 #include <exceptions.hh>
 #include <command-line-reader.hh>
+
+#include <unistd.h>
+#include <sys/types.h>
+#include <pwd.h>
 
 using namespace std;
 
@@ -44,6 +49,30 @@ command_line_reader::command_line_reader(uint16_t max_command_line_length,
         token[__i] = new char[token_size];
     }//for
     noa = 0;
+
+    this->prompt = propmt;
+
+    if(history == "")
+    {
+        const char *homedir = NULL;
+        if ((homedir = getenv("HOME")) == NULL) {
+            homedir = getpwuid(getuid())->pw_dir;
+        }
+
+        if(homedir) {
+            this->history = homedir;
+            this->history += "/.hexcalc_history";
+        }
+    } else
+        this->history = history;
+
+    FILE *fp = fopen(this->history.c_str(), "a");
+    if(fp)
+        fclose(fp);
+    else {
+        std::cout << "History file " << this->history << " cannot be accessed. No history will be saved" << std::endl;
+        this->history = "";
+    }
 }//command_line_reader
 
 /*****************************************************************/
