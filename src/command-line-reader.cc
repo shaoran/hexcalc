@@ -30,9 +30,14 @@
 #include <exceptions.hh>
 #include <command-line-reader.hh>
 
+#include <readline/readline.h>
+#include <readline/history.h>
+
 #include <unistd.h>
 #include <sys/types.h>
 #include <pwd.h>
+#include <setjmp.h>
+#include <signal.h>
 
 using namespace std;
 
@@ -73,6 +78,19 @@ command_line_reader::command_line_reader(uint16_t max_command_line_length,
         std::cout << "History file " << this->history << " cannot be accessed. No history will be saved" << std::endl;
         this->history = "";
     }
+
+
+
+    // initializing readline
+
+    // Allow conditional parsing of the ~/.inputrc file
+    rl_readline_name = "hexcalc";
+
+    if(this->history != "")
+        read_history(this->history.c_str());
+
+    stifle_history(100); // allow max 100 entries in history file
+
 }//command_line_reader
 
 /*****************************************************************/
@@ -82,9 +100,24 @@ command_line_reader::~command_line_reader(){
         delete[] token[__i];
     }//for
     delete[] token;
+
+    if(this->history != "")
+        write_history(this->history.c_str());
 }//~command_line_reader
 
 /*****************************************************************/
+
+static sigjmp_buf __env;
+static volatile sig_atomic_t __jump = 0;
+
+void sigint_hdl(int signal)
+{
+    if(signal == SIGINT && __jump)
+    {
+        __jump = 0;
+        siglongjmp(__env, 1);
+    }
+}
 
 void command_line_reader::operator>>(char &command){
     for(__i = 0; __i <= capacity; __i++){
@@ -92,17 +125,39 @@ void command_line_reader::operator>>(char &command){
     }//for
     __i = 0;
     __j = 0;
-    while(true){
-        cin.get(ch);
-        if(cin.eof()){
-            throw(exceptions::EOF_COMMAND);
-        }//if
+
+    __jump = 0;
+
+    if(signal(SIGINT, sigint_hdl) != SIG_ERR)
+    {
+        if(sigsetjmp(__env, 1) != 0)
+        {
+            rl_cleanup_after_signal();
+            rl_free_line_state();
+            std::cout << std::endl;
+            // quit program after ctrl+c, write history and do clean up
+            command = 'q';
+            return;
+        }
+        __jump = 1;
+    }
+
+    char *buffer = readline(this->prompt.c_str());
+
+    signal(SIGINT, SIG_IGN);
+
+
+    if(buffer == NULL)
+        throw(exceptions::EOF_COMMAND);
+
+    add_history(buffer);
+    int blen = strlen(buffer);
+
+    for(int idx = 0; idx < blen ; ++idx)
+    {
+        ch = buffer[idx];
+
         switch(ch){
-        case '\n':
-            if(__j){
-                __i++;
-            }//if
-            goto out_of_while;
         case ' ':
         case '\t':
             if(__j){
@@ -117,8 +172,12 @@ void command_line_reader::operator>>(char &command){
                 __j++;
             }//if
         }//switch
-    }//while
- out_of_while:
+    }//for
+
+    free(buffer);
+
+    if(__j)
+        __i++;
 
     if(token[0][0] == 0){
         throw(exceptions::EMPTY_COMMAND);

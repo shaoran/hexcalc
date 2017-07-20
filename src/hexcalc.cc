@@ -443,7 +443,6 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
 
         cout << endl;
     l_read_command_line:
-        cout << prompt << flush;
         try{R >> command;}
         catch(signal e){
             if(e == EMPTY_COMMAND){

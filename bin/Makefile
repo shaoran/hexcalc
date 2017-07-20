@@ -40,7 +40,7 @@ TAGS = $(BASE)/.TAGS
 CCC = g++
 DEFINITIONS =
 CFLAGS = -c -Wall -O3 -std=c++14 $(DEFINITIONS) -I$(INCLUDE)
-LFLAGS = -L$(LIB)
+LFLAGS = -L$(LIB) -lreadline
 
 ### rules #####################################################################
 
