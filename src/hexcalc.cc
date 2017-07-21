@@ -433,6 +433,7 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
         try{
             RI = new reg_info(specs_file.c_str());
             A.print_registers(RI);
+            R.set_registers(*RI);
             std::cout << std::endl;
         }//try
         catch(exception &e){
@@ -752,6 +753,7 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
                 RI = NULL;
                 try{
                     RI = new reg_info(R.get_string(0));
+                    R.set_registers(*RI);
                     A.print_registers(RI);
                 }//try
                 catch(exception &e){

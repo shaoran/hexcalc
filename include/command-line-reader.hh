@@ -24,6 +24,9 @@
 #define command_line_reader_hh command_line_reader_hh
 
 #include<string>
+#include <vector>
+
+#include <reg-info.hh>
 
 
 /*** class command_line_reader ***********************************************/
@@ -46,6 +49,8 @@ class command_line_reader{
 	std::string history; // readline history file
 
 	int cmd_w_arg = 0;   // width of accumulator
+
+	std::vector<std::string> cmd_s_regs;  // list of registers
 
  public:
 
@@ -75,6 +80,9 @@ class command_line_reader{
 
 	const int get_width() const;
 	void set_width(int width);
+
+	const std::vector<std::string> &get_registers() const;
+	void set_registers(reg_info &registers);
 };
 
 #endif

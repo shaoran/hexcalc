@@ -248,4 +248,18 @@ void command_line_reader::set_width(int width)
     this->cmd_w_arg = width;
 }
 
+const std::vector<std::string> &command_line_reader::get_registers() const {
+    return this->cmd_s_regs;
+}
+
+void command_line_reader::set_registers(reg_info &registers)
+{
+    this->cmd_s_regs.clear();
+
+    for(auto i = registers.RD().begin(); i != registers.RD().end(); ++i)
+    {
+        this->cmd_s_regs.push_back(std::string(i->first));
+    }
+}
+
 /* aczutro ************************************************************* end */
