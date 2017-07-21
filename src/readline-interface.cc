@@ -214,7 +214,8 @@ char *rl_iface::U_command_generator(const char *text, int state)
 
 char *rl_iface::R_command_generator(const char *text, int state)
 {
-	return NULL;
+    rl_attempted_completion_over = 0;
+    return NULL;
 }
 
 char *rl_iface::command_list_generator(const char *text, int state)
