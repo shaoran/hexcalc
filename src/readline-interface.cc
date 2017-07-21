@@ -36,6 +36,27 @@ static std::map<std::string, rl_compentry_func_t*> __command_map;
 static std::vector<std::string> __command_list;
 static int __rl_cmdline_arg_index = 0;
 
+static char *number_list_generator(const char *text, int state, int begin, int end)
+{
+    static int num, len;
+
+    if(state == 0)
+    {
+        num = begin;
+        len = strlen(text);
+    }
+
+    while(num < end + 1)
+    {
+        char buff[1024];
+        sprintf(buff, "%d", num++);
+
+        if(strncmp(text, buff, len) == 0)
+            return strdup(buff);
+    }
+
+	return NULL;
+}
 
 int rl_iface::tokenizer(std::vector<std::string> &tokens, const char *stream, const char *delim, char escape, const char *quotes)
 {
@@ -243,27 +264,10 @@ char *rl_iface::s_command_generator(const char *text, int state)
 
 char *rl_iface::w_command_generator(const char *text, int state)
 {
-    static int width, len;
-
     if(__rl_cmdline_arg_index > 2)
         return NULL;
 
-    if(state == 0)
-    {
-        width = 1;
-        len = strlen(text);
-    }
-
-    while(width < 17)
-    {
-        char buff[4];
-        sprintf(buff, "%d", width++);
-
-        if(strncmp(text, buff, len) == 0)
-            return strdup(buff);
-    }
-
-	return NULL;
+    return number_list_generator(text, state, 1, 16);
 }
 
 char *rl_iface::U_command_generator(const char *text, int state)
