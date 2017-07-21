@@ -155,7 +155,7 @@ char **rl_iface::hexcalc_complete(const char *text, int start, int end)
     rl_attempted_completion_over = 1;
 
 
-    if(tokenizer(tokens, rl_line_buffer, " ", '\\', "\"'") == 0)
+    if(get_previous_tokens(tokens, rl_line_buffer, start) == 0)
         return NULL;
 
     if(tokens.size() == 0)
