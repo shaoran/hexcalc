@@ -116,6 +116,19 @@ int rl_iface::tokenizer(std::vector<std::string> &tokens, const char *stream, co
 
 char **rl_iface::hexcalc_complete(const char *text, int start, int end)
 {
+    std::vector<std::string> tokens;
+
+    rl_attempted_completion_over = 1;
+
+
+    if(tokenizer(tokens, rl_line_buffer, " ", '\\', "\"'") == 0)
+        return NULL;
+
+    if(tokens.size() == 0)
+        return rl_completion_matches(text, __command_map["h"]);
+
+    // TODO: get command and execute the proper generator
+
 	return NULL;
 }
 
@@ -192,7 +205,18 @@ char *rl_iface::R_command_generator(const char *text, int state)
 
 char *rl_iface::command_list_generator(const char *text, int state)
 {
-	return NULL;
+    static int size, idx;
+
+    if(state == 0)
+    {
+        size = __command_list.size();
+        idx = 0;
+    }
+
+    if(idx >= size)
+        return NULL;
+
+    return strdup(__command_list[idx++].c_str());
 }
 
 
