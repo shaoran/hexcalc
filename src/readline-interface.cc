@@ -23,11 +23,15 @@
 #include <iostream>
 #include <cctype>
 #include <cstring>
+#include <map>
 
 #include <readline/readline.h>
 #include <readline/history.h>
 
 #include <readline-interface.hh>
+
+
+static std::map<std::string, rl_compentry_func_t*> __command_map;
 
 
 int rl_iface::tokenizer(std::vector<std::string> &tokens, const char *stream, const char *delim, char escape, const char *quotes)
@@ -106,6 +110,74 @@ int rl_iface::tokenizer(std::vector<std::string> &tokens, const char *stream, co
 	}
 
 	return 1;
+}
+
+char **rl_iface::hexcalc_complete(const char *text, int start, int end)
+{
+	return NULL;
+}
+
+void rl_iface::setup_readline_interface(void)
+{
+	__command_map.clear();
+
+	__command_map["p"] = simple_command_generator;
+	__command_map["I"] = simple_command_generator;
+	__command_map["w"] = w_command_generator;
+	__command_map["i"] = ilL_command_generator;
+	__command_map["l"] = ilL_command_generator;
+	__command_map["L"] = ilL_command_generator;
+	__command_map["="] = equals_command_generator;
+	__command_map["u"] = simple_command_generator;
+	__command_map["r"] = simple_command_generator;
+	__command_map["U"] = simple_command_generator;
+	__command_map["s"] = s_command_generator;
+	__command_map["S"] = simple_command_generator;
+	__command_map["R"] = R_command_generator;
+	__command_map["h"] = command_list_generator;
+	__command_map["v"] = simple_command_generator;
+	__command_map["q"] = simple_command_generator;
+	__command_map["h"] = simple_command_generator;
+}
+
+char *rl_iface::simple_command_generator(const char *text, int state)
+{
+	return NULL;
+}
+
+char *rl_iface::ilL_command_generator(const char *text, int state)
+{
+	return NULL;
+}
+
+char *rl_iface::equals_command_generator(const char *text, int state)
+{
+	return NULL;
+}
+
+char *rl_iface::s_command_generator(const char *text, int state)
+{
+	return NULL;
+}
+
+char *rl_iface::w_command_generator(const char *text, int state)
+{
+	return NULL;
+}
+
+char *rl_iface::U_command_generator(const char *text, int state)
+{
+	return NULL;
+}
+
+char *rl_iface::R_command_generator(const char *text, int state)
+{
+	return NULL;
+}
+
+char *rl_iface::command_list_generator(const char *text, int state)
+{
+	return NULL;
 }
 
 

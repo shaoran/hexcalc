@@ -51,10 +51,55 @@ namespace rl_iface {
 	int tokenizer(std::vector<std::string> &tokens, const char *stream, const char *delim, char escape, const char *quotes);
 
 	/**
+	 * setups variables needed in order to do multilevel completion
+	 */
+	void setup_readline_interface(void);
+
+	/**
 	 * The main interface to readline's completion framework.
 	 */
 	char **hexcalc_complete(const char *text, int start, int end);
 
+
+	/**
+	 * This is a generator for commands with no arguments, returns NULL.
+	 */
+	char *simple_command_generator(const char *text, int state);
+
+	/**
+	 * This is a generator for the 'i', 'l' and 'L' commands
+	 */
+	char *ilL_command_generator(const char *text, int state);
+
+	/**
+	 * This is a generator for the '=' commands
+	 */
+	char *equals_command_generator(const char *text, int state);
+
+	/**
+	 * This is a generator for the 's' commands
+	 */
+	char *s_command_generator(const char *text, int state);
+
+	/**
+	 * This is a generator for the 'w' commands
+	 */
+	char *w_command_generator(const char *text, int state);
+
+	/**
+	 * This is a generator for the 'U' commands
+	 */
+	char *U_command_generator(const char *text, int state);
+
+	/**
+	 * This is a generator for the 'R' commands
+	 */
+	char *R_command_generator(const char *text, int state);
+
+	/**
+	 * This is a generator for command list
+	 */
+	char *command_list_generator(const char *text, int state);
 
 
 	// helpers
