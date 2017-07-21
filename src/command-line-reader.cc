@@ -92,6 +92,8 @@ command_line_reader::command_line_reader(uint16_t max_command_line_length,
 
     stifle_history(100); // allow max 100 entries in history file
 
+    rl_iface::setup_readline_interface();
+
 }//command_line_reader
 
 /*****************************************************************/
