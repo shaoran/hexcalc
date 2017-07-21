@@ -39,6 +39,7 @@ void *rl_CLI_object;
 static std::map<std::string, rl_compentry_func_t*> __command_map;
 static std::vector<std::string> __command_list;
 static int __rl_cmdline_arg_index = 0;
+static std::vector<std::string> __rl_cmdline_tokens;
 
 static char *number_list_generator(const char *text, int state, int begin, int end)
 {
@@ -176,20 +177,19 @@ int rl_iface::get_previous_tokens(std::vector<std::string> &tokens, const char *
 
 char **rl_iface::hexcalc_complete(const char *text, int start, int end)
 {
-    std::vector<std::string> tokens;
-
     rl_attempted_completion_over = 1;
 
 
-    if(get_previous_tokens(tokens, rl_line_buffer, start) == 0)
+    if(get_previous_tokens(__rl_cmdline_tokens, rl_line_buffer, start) == 0)
         return NULL;
 
-    __rl_cmdline_arg_index = tokens.size() + 1;
+    __rl_cmdline_arg_index = __rl_cmdline_tokens.size() + 1;
 
     if(__rl_cmdline_arg_index == 1)
         return rl_completion_matches(text, __command_map["h"]);
 
-    char *cmd = strdup(tokens[0].c_str());
+
+    char *cmd = strdup(__rl_cmdline_tokens[0].c_str());
 
     if(cmd == NULL)
         return NULL;
