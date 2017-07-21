@@ -29,6 +29,28 @@
 namespace rl_iface {
 
 	/**
+	 * this method parses the input stream as a shell command line. It supports quotes and an escape character.
+	 *
+	 * examples:
+	 *  let escape =  '\\', quotes = "\"'", delim = " "
+	 *
+	 *  stream = c1 c2 "c3 c4" c5\ c6 'c7 c8 "c9 c10"'
+	 *
+	 *  tokens:
+	 *    - c1
+	 *    - c2
+	 *    - c3 c4
+	 *    - c5 c6
+	 *    - c7 c8 "c9 c10"
+	 *
+	 *    Note: escaping only works for quotes, escape and delimiter characters. It will be ignored with
+	 *    other characters
+	 *
+	 *    returns 1 on success, 0 otherwise. tokens is cleared on entry regardless of the return value
+	 */
+	int tokenizer(std::vector<std::string> &tokens, const char *stream, const char *delim, char escape, const char *quotes);
+
+	/**
 	 * The main interface to readline's completion framework.
 	 */
 	char **hexcalc_complete(const char *text, int start, int end);
