@@ -23,9 +23,15 @@
 #ifndef __READLINE_INTERFACE
 #define __READLINE_INTERFACE
 
-/*
- * The main interface to readline's completion framework.
- */
-char **hexcalc_complete(const char *text, int start, int end);
+#include <vector>
+#include <string>
 
+namespace rl_iface {
+
+	/**
+	 * The main interface to readline's completion framework.
+	 */
+	char **hexcalc_complete(const char *text, int start, int end);
+
+};
 #endif
