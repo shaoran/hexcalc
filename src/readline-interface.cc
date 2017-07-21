@@ -253,7 +253,27 @@ char *rl_iface::simple_command_generator(const char *text, int state)
 
 char *rl_iface::ilL_command_generator(const char *text, int state)
 {
-	return NULL;
+    if(__rl_cmdline_arg_index > 3)
+        return NULL;
+
+    static int start, end;
+
+    if(state == 0)
+    {
+        end = 4 * rl_get_cli->get_width() - 1;
+
+        if(__rl_cmdline_arg_index == 2)
+            start = 0;
+        else {
+            std::string s = __rl_cmdline_tokens[1];
+            char t[s.size() + 1];
+            strcpy(t, s.c_str());
+            trim(t);
+            start = atoi(t) + 1;
+        }
+    }
+
+    return number_list_generator(text, state, start, end);
 }
 
 char *rl_iface::equals_command_generator(const char *text, int state)
