@@ -145,7 +145,7 @@ void rl_iface::setup_readline_interface(void)
 	__command_map["h"] = command_list_generator;
 	__command_map["v"] = simple_command_generator;
 	__command_map["q"] = simple_command_generator;
-	__command_map["h"] = simple_command_generator;
+	__command_map["h"] = command_list_generator;
 
     __command_list.clear();
 
