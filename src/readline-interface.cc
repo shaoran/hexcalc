@@ -243,6 +243,26 @@ char *rl_iface::s_command_generator(const char *text, int state)
 
 char *rl_iface::w_command_generator(const char *text, int state)
 {
+    static int width, len;
+
+    if(__rl_cmdline_arg_index > 2)
+        return NULL;
+
+    if(state == 0)
+    {
+        width = 1;
+        len = strlen(text);
+    }
+
+    while(width < 17)
+    {
+        char buff[4];
+        sprintf(buff, "%d", width++);
+
+        if(strncmp(text, buff, len) == 0)
+            return strdup(buff);
+    }
+
 	return NULL;
 }
 
