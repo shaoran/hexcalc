@@ -24,6 +24,7 @@
 #include <cctype>
 #include <cstring>
 #include <map>
+#include <algorithm>
 
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -32,6 +33,7 @@
 
 
 static std::map<std::string, rl_compentry_func_t*> __command_map;
+static std::vector<std::string> __command_list;
 
 
 int rl_iface::tokenizer(std::vector<std::string> &tokens, const char *stream, const char *delim, char escape, const char *quotes)
@@ -117,6 +119,12 @@ char **rl_iface::hexcalc_complete(const char *text, int start, int end)
 	return NULL;
 }
 
+
+bool less_no_case(const std::string &x, const std::string &y)
+{
+    return (strcasecmp(x.c_str(), y.c_str()) < 0);
+}
+
 void rl_iface::setup_readline_interface(void)
 {
 	__command_map.clear();
@@ -138,6 +146,13 @@ void rl_iface::setup_readline_interface(void)
 	__command_map["v"] = simple_command_generator;
 	__command_map["q"] = simple_command_generator;
 	__command_map["h"] = simple_command_generator;
+
+    __command_list.clear();
+
+    for(auto i = __command_map.begin(); i != __command_map.end(); ++i)
+        __command_list.push_back(i->first);
+
+    std::sort(__command_list.begin(), __command_list.end(), less_no_case);
 }
 
 char *rl_iface::simple_command_generator(const char *text, int state)
