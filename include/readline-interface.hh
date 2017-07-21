@@ -50,6 +50,11 @@ namespace rl_iface {
 	 */
 	int tokenizer(std::vector<std::string> &tokens, const char *stream, const char *delim, char escape, const char *quotes);
 
+    /**
+     * returns all previous tokens depending where the cursor is placed (inidatced by start)
+     */
+    int get_previous_tokens(std::vector<std::string> &tokens, const char *line, int start);
+
 	/**
 	 * setups variables needed in order to do multilevel completion
 	 */

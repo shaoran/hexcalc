@@ -114,6 +114,40 @@ int rl_iface::tokenizer(std::vector<std::string> &tokens, const char *stream, co
 	return 1;
 }
 
+int rl_iface::get_previous_tokens(std::vector<std::string> &tokens, const char *line, int start)
+{
+	if(line == NULL)
+		return 0;
+
+	int len = strlen(line);
+
+	tokens.clear();
+
+	if(start == 0)
+		return 1;
+
+	if(start > len)
+		return 0;
+
+
+	int i;
+	for(i = start - 1; i > -1; --i)
+	{
+		if(isblank(line[i]))
+			break;
+	}
+
+	if(i < 0)
+		return 1;
+
+	char buffer[i+2] = { 0 };
+	memcpy(buffer, line, i + 1);
+
+	tokenizer(tokens, buffer, " \t", '\\', "\"'");
+
+	return 1;
+}
+
 char **rl_iface::hexcalc_complete(const char *text, int start, int end)
 {
     std::vector<std::string> tokens;
