@@ -21,6 +21,8 @@
  *
  ******************************************************************* aczutro */
 #include <iostream>
+#include <cctype>
+#include <cstring>
 
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -104,4 +106,57 @@ int rl_iface::tokenizer(std::vector<std::string> &tokens, const char *stream, co
 	}
 
 	return 1;
+}
+
+
+
+void rl_iface::ltrim(char *text)
+{
+	if(text == NULL)
+		return;
+
+	int i, len = strlen(text);
+
+	for(i = 0; i < len; ++i)
+	{
+		if(!isblank(text[i]))
+			break;
+	}
+
+	if(i >= len)
+	{
+		*text = 0;
+		return;
+	}
+
+
+	memmove(text, text + i, len - i + 1);
+}
+
+void rl_iface::rtrim(char *text)
+{
+	if(text == NULL)
+		return;
+
+	int i, len = strlen(text);
+
+	for(i = len - 1; i > -1; --i)
+	{
+		if(!isblank(text[i]))
+			break;
+	}
+
+	if(i == -1)
+	{
+		*text = 0;
+		return;
+	}
+
+	text[i + 1] = 0;
+}
+
+void rl_iface::trim(char *text)
+{
+	rl_iface::ltrim(text);
+	rl_iface::rtrim(text);
 }

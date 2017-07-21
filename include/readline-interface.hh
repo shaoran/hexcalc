@@ -55,5 +55,13 @@ namespace rl_iface {
 	 */
 	char **hexcalc_complete(const char *text, int start, int end);
 
+
+
+	// helpers
+
+
+	void ltrim(char *text);
+	void rtrim(char *text);
+	void trim(char *text);
 };
 #endif
