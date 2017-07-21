@@ -66,6 +66,7 @@ $(LIB)/$(MAIN).o:		$(SRC)/$(MAIN).cc \
 				$(INCLUDE)/core.hh \
 				$(INCLUDE)/core-state.hh \
 				$(INCLUDE)/history-index.hh \
+				$(INCLUDE)/readline-interface.hh\
 				$(INCLUDE)/reg-info.hh
 			$(CCC) -o $@ $< $(CFLAGS)
 
@@ -80,6 +81,7 @@ $(LIB)/core.o:			$(SRC)/core.cc $(INCLUDE)/core.hh \
 
 $(LIB)/command-line-reader.o:	$(SRC)/command-line-reader.cc \
 				$(INCLUDE)/command-line-reader.hh \
+				$(INCLUDE)/readline-interface.hh\
 				$(INCLUDE)/exceptions.hh
 			$(CCC) -o $@ $< $(CFLAGS)
 
