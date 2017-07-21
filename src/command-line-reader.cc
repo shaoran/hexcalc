@@ -95,6 +95,8 @@ command_line_reader::command_line_reader(uint16_t max_command_line_length,
     rl_iface::setup_readline_interface();
     rl_attempted_completion_function = rl_iface::hexcalc_complete;
 
+    rl_set_cli(this);
+
 }//command_line_reader
 
 /*****************************************************************/

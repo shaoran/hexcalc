@@ -28,9 +28,13 @@
 
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <command-line-reader.hh>
 
 #include <readline-interface.hh>
 
+void *rl_CLI_object;
+
+#define rl_get_cli    ((command_line_reader*) rl_CLI_object)
 
 static std::map<std::string, rl_compentry_func_t*> __command_map;
 static std::vector<std::string> __command_list;

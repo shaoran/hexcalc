@@ -114,4 +114,9 @@ namespace rl_iface {
 	void rtrim(char *text);
 	void trim(char *text);
 };
+
+extern void* rl_CLI_object;
+
+#define rl_set_cli(x) rl_CLI_object = (void*) (x);
+
 #endif
