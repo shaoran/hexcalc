@@ -34,6 +34,7 @@
 
 static std::map<std::string, rl_compentry_func_t*> __command_map;
 static std::vector<std::string> __command_list;
+static int __rl_cmdline_arg_index = 0;
 
 
 int rl_iface::tokenizer(std::vector<std::string> &tokens, const char *stream, const char *delim, char escape, const char *quotes)
@@ -158,7 +159,9 @@ char **rl_iface::hexcalc_complete(const char *text, int start, int end)
     if(get_previous_tokens(tokens, rl_line_buffer, start) == 0)
         return NULL;
 
-    if(tokens.size() == 0)
+    __rl_cmdline_arg_index = tokens.size() + 1;
+
+    if(__rl_cmdline_arg_index == 1)
         return rl_completion_matches(text, __command_map["h"]);
 
     char *cmd = strdup(tokens[0].c_str());
@@ -214,6 +217,8 @@ void rl_iface::setup_readline_interface(void)
         __command_list.push_back(i->first);
 
     std::sort(__command_list.begin(), __command_list.end(), less_no_case);
+
+    __rl_cmdline_arg_index = 0;
 }
 
 char *rl_iface::simple_command_generator(const char *text, int state)
@@ -248,7 +253,7 @@ char *rl_iface::U_command_generator(const char *text, int state)
 
 char *rl_iface::R_command_generator(const char *text, int state)
 {
-    rl_attempted_completion_over = 0;
+    rl_attempted_completion_over = __rl_cmdline_arg_index != 2 ? 1 : 0;
     return NULL;
 }
 
@@ -258,6 +263,8 @@ char *rl_iface::command_list_generator(const char *text, int state)
     static std::vector<std::string>::iterator iter;
     static int len;
 
+    if(__rl_cmdline_arg_index > 2)
+        return NULL;
 
     if(state == 0)
     {
