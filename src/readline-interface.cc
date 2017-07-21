@@ -254,18 +254,26 @@ char *rl_iface::R_command_generator(const char *text, int state)
 
 char *rl_iface::command_list_generator(const char *text, int state)
 {
-    static int size, idx;
+
+    static std::vector<std::string>::iterator iter;
+    static int len;
+
 
     if(state == 0)
     {
-        size = __command_list.size();
-        idx = 0;
+        iter = __command_list.begin();
+        len = strlen(text);
     }
 
-    if(idx >= size)
-        return NULL;
+    while(iter != __command_list.end())
+    {
+        std::string cmd = *(iter++);
 
-    return strdup(__command_list[idx++].c_str());
+        if(strncmp(text, cmd.c_str(), len) == 0)
+            return strdup(cmd.c_str());
+    }
+
+    return NULL;
 }
 
 
