@@ -127,9 +127,23 @@ char **rl_iface::hexcalc_complete(const char *text, int start, int end)
     if(tokens.size() == 0)
         return rl_completion_matches(text, __command_map["h"]);
 
-    // TODO: get command and execute the proper generator
+    char *cmd = strdup(tokens[0].c_str());
 
-	return NULL;
+    if(cmd == NULL)
+        return NULL;
+
+    trim(cmd);
+
+    if(__command_map.find(cmd) == __command_map.end())
+    {
+        free(cmd);
+        return NULL;
+    }
+
+    std::string cmd_s = cmd;
+    free(cmd);
+
+    return rl_completion_matches(text, __command_map[cmd_s]);
 }
 
 
