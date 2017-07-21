@@ -29,6 +29,7 @@
 
 #include <exceptions.hh>
 #include <command-line-reader.hh>
+#include <readline-interface.hh>
 
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -237,5 +238,14 @@ bool command_line_reader::is_not_pos_dec(uint8_t i){
     }//for
     return false;
 }//is_not_pos_num
+
+const int command_line_reader::get_width() const {
+    return this->cmd_w_arg;
+}
+
+void command_line_reader::set_width(int width)
+{
+    this->cmd_w_arg = width;
+}
 
 /* aczutro ************************************************************* end */

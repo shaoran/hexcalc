@@ -45,6 +45,8 @@ class command_line_reader{
 	std::string prompt;
 	std::string history; // readline history file
 
+	int cmd_w_arg = 0;   // width of accumulator
+
  public:
 
     command_line_reader(uint16_t max_command_line_length,
@@ -70,6 +72,9 @@ class command_line_reader{
     }//get_string
 
     void operator>>(char &command);
+
+	const int get_width() const;
+	void set_width(int width);
 };
 
 #endif

@@ -422,6 +422,8 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
     command_line_reader R(256, 2, prompt, history_file);
     cout << version_text << endl << endl << intro << flush;
 
+    R.set_width(A.get_width());
+
     /* run the main loop, consisiting of
      * printing prompt, reading command, executing, for ever *********/
 
@@ -610,6 +612,7 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
                     }//if
                     A.set_width(R.get_num(0));
                     A.print();
+                    R.set_width(R.get_num(0));
                 }__print_errmsg;
             }else{
                 if(A.get_width()){
