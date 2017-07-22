@@ -48,7 +48,7 @@ using namespace exceptions;
 
 #define QUIT          "q"
 #define HELP          "h"
-#define VERSION       "v"
+#define CVERSION       "v"
 #define PRINT         "p"
 #define INDICES       "I"
 #define HILITE        "l"
@@ -66,7 +66,7 @@ using namespace exceptions;
 
 #define CMD_QUIT          QUIT[0]
 #define CMD_HELP          HELP[0]
-#define CMD_VERSION       VERSION[0]
+#define CMD_CVERSION       CVERSION[0]
 #define CMD_PRINT         PRINT[0]
 #define CMD_INDICES       INDICES[0]
 #define CMD_HILITE        HILITE[0]
@@ -174,7 +174,7 @@ int main(int argc, char *argv[]){
     {
         auto __quit          = __cmd(QUIT         );
         auto __help          = __cmd(HELP         );
-        auto __version       = __cmd(VERSION      );
+        auto __version       = __cmd(CVERSION     );
         auto __print         = __cmd(PRINT        );
         auto __indices       = __cmd(INDICES      );
         auto __hilite        = __cmd(HILITE       );
@@ -531,7 +531,7 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
             A.print();
             break;
 
-        case CMD_VERSION:
+        case CMD_CVERSION:
             cout << version_text;
             break;
 
