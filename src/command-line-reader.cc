@@ -21,6 +21,8 @@
  *
  ******************************************************************* aczutro */
 
+#include <hexcalc-config.hh>
+
 #include <iostream>
 #include <limits>
 
@@ -29,6 +31,8 @@
 
 #include <exceptions.hh>
 #include <command-line-reader.hh>
+
+#ifdef HAVE_LIBREADLINE
 #include <readline-interface.hh>
 
 #include <readline/readline.h>
@@ -39,14 +43,20 @@
 #include <pwd.h>
 #include <setjmp.h>
 #include <signal.h>
+#endif
 
 using namespace std;
 
 
 /*** class command_line_reader functions *************************************/
 
+#ifdef HAVE_LIBREADLINE
 command_line_reader::command_line_reader(uint16_t max_command_line_length,
                                          uint8_t max_number_of_args, std::string propmt, std::string history){
+#else
+command_line_reader::command_line_reader(uint16_t max_command_line_length,
+                                         uint8_t max_number_of_args){
+#endif
     command_line_length = max_command_line_length;
     token_size = command_line_length + 1;
     capacity = max_number_of_args;
@@ -56,6 +66,7 @@ command_line_reader::command_line_reader(uint16_t max_command_line_length,
     }//for
     noa = 0;
 
+#ifdef HAVE_LIBREADLINE
     this->prompt = propmt;
 
     if(history == "")
@@ -96,7 +107,7 @@ command_line_reader::command_line_reader(uint16_t max_command_line_length,
     rl_attempted_completion_function = rl_iface::hexcalc_complete;
 
     rl_set_cli(this);
-
+#endif
 }//command_line_reader
 
 /*****************************************************************/
@@ -107,12 +118,15 @@ command_line_reader::~command_line_reader(){
     }//for
     delete[] token;
 
+#ifdef HAVE_LIBREADLINE
     if(this->history != "")
         write_history(this->history.c_str());
+#endif
 }//~command_line_reader
 
 /*****************************************************************/
 
+#ifdef HAVE_LIBREADLINE
 static sigjmp_buf __env;
 static volatile sig_atomic_t __jump = 0;
 
@@ -124,6 +138,7 @@ void sigint_hdl(int signal)
         siglongjmp(__env, 1);
     }
 }
+#endif
 
 void command_line_reader::operator>>(char &command){
     for(__i = 0; __i <= capacity; __i++){
@@ -132,6 +147,7 @@ void command_line_reader::operator>>(char &command){
     __i = 0;
     __j = 0;
 
+#ifdef HAVE_LIBREADLINE
     __jump = 0;
 
     if(signal(SIGINT, sigint_hdl) != SIG_ERR)
@@ -174,8 +190,21 @@ void command_line_reader::operator>>(char &command){
     for(int idx = 0; idx < blen ; ++idx)
     {
         ch = buffer[idx];
-
+#else
+    while(true){
+        cin.get(ch);
+        if(cin.eof()){
+            throw(exceptions::EOF_COMMAND);
+        }//if
+#endif
         switch(ch){
+#ifndef HAVE_LIBREADLINE
+        case '\n':
+            if(__j){
+                __i++;
+            }//if
+            goto out_of_while;
+#endif
         case ' ':
         case '\t':
             if(__j){
@@ -191,11 +220,14 @@ void command_line_reader::operator>>(char &command){
             }//if
         }//switch
     }//for
-
+#ifndef HAVE_LIBREADLINE
+    out_of_while:
+#else
     free(buffer);
 
     if(__j)
         __i++;
+#endif
 
     if(token[0][0] == 0){
         throw(exceptions::EMPTY_COMMAND);
@@ -256,6 +288,7 @@ bool command_line_reader::is_not_pos_dec(uint8_t i){
     return false;
 }//is_not_pos_num
 
+#ifdef HAVE_LIBREADLINE
 const int command_line_reader::get_width() const {
     return this->cmd_w_arg;
 }
@@ -278,5 +311,6 @@ void command_line_reader::set_registers(reg_info &registers)
         this->cmd_s_regs.push_back(std::string(i->first));
     }
 }
+#endif
 
 /* aczutro ************************************************************* end */

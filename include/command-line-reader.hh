@@ -23,6 +23,8 @@
 #ifndef command_line_reader_hh
 #define command_line_reader_hh command_line_reader_hh
 
+#include <hexcalc-config.hh>
+
 #include<string>
 #include <vector>
 
@@ -45,17 +47,24 @@ class command_line_reader{
     uint16_t __j;
     //char command;
 
+#ifdef HAVE_LIBREADLINE
 	std::string prompt;
 	std::string history; // readline history file
 
 	int cmd_w_arg = 0;   // width of accumulator
 
 	std::vector<std::string> cmd_s_regs;  // list of registers
+#endif
 
  public:
 
+#ifdef HAVE_LIBREADLINE
     command_line_reader(uint16_t max_command_line_length,
                         uint8_t max_number_of_args, std::string propmt, std::string history);
+#else
+    command_line_reader(uint16_t max_command_line_length,
+                        uint8_t max_number_of_args);
+#endif
 
     ~command_line_reader();
 
@@ -78,11 +87,13 @@ class command_line_reader{
 
     void operator>>(char &command);
 
+#ifdef HAVE_LIBREADLINE
 	const int get_width() const;
 	void set_width(int width);
 
 	const std::vector<std::string> &get_registers() const;
 	void set_registers(reg_info &registers);
+#endif
 };
 
 #endif
