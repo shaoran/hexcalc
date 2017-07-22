@@ -21,4 +21,4 @@ endif
 
 hexcalc_CXXFLAGS = -Wall -O3 -std=c++14 -I$(srcdir)/include $(AM_CXXFLAGS)
 
-extra_DIST=specs/sample-spec
+extra_DIST=specs/sample-spec README.md
