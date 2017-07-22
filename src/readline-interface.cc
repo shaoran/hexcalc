@@ -170,7 +170,7 @@ int rl_iface::get_previous_tokens(std::vector<std::string> &tokens, const char *
 	char buffer[i+2] = { 0 };
 	memcpy(buffer, line, i + 1);
 
-	tokenizer(tokens, buffer, " \t", '\\', "\"'");
+	tokenizer(tokens, buffer, " \t", '\\', "\"");
 
 	return 1;
 }
