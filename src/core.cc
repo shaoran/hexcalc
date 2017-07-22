@@ -30,7 +30,6 @@
 #include <core.hh>
 
 using namespace std;
-using namespace faces;
 using namespace exceptions;
 
 
