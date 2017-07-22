@@ -294,11 +294,6 @@ char *rl_iface::w_command_generator(const char *text, int state)
     return number_list_generator(text, state, 1, 16);
 }
 
-char *rl_iface::U_command_generator(const char *text, int state)
-{
-	return NULL;
-}
-
 char *rl_iface::R_command_generator(const char *text, int state)
 {
     rl_attempted_completion_over = __rl_cmdline_arg_index != 2 ? 1 : 0;

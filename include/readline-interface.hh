@@ -92,11 +92,6 @@ namespace rl_iface {
 	char *w_command_generator(const char *text, int state);
 
 	/**
-	 * This is a generator for the 'U' commands
-	 */
-	char *U_command_generator(const char *text, int state);
-
-	/**
 	 * This is a generator for the 'R' commands
 	 */
 	char *R_command_generator(const char *text, int state);
