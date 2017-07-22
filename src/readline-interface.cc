@@ -306,6 +306,28 @@ char *rl_iface::equals_command_generator(const char *text, int state)
 
 char *rl_iface::s_command_generator(const char *text, int state)
 {
+    if(__rl_cmdline_arg_index > 2)
+        return NULL;
+
+    static std::vector<std::string> registers;
+    static std::vector<std::string>::iterator iter;
+    static int len;
+
+    if(state == 0)
+    {
+        registers = rl_get_cli->get_registers();
+        len = strlen(text);
+        iter = registers.begin();
+    }
+
+    while(iter != registers.end())
+    {
+        std::string reg = *(iter++);
+
+        if(strncmp(text, reg.c_str(), len) == 0)
+            return strdup(reg.c_str());
+    }
+
 	return NULL;
 }
 
