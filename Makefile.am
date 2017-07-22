@@ -20,3 +20,5 @@ hexcalc_SOURCES += src/readline-interface.cc include/readline-interface.hh
 endif
 
 hexcalc_CXXFLAGS = -Wall -O3 -std=c++14 -I$(srcdir)/include $(AM_CXXFLAGS)
+
+extra_DIST=specs/sample-spec
