@@ -8,7 +8,7 @@ AM_SILENT_RULES([yes])
 AM_INIT_AUTOMAKE([foreign subdir-objects])
 
 AC_CONFIG_SRCDIR([src/hexcalc.cc])
-AC_CONFIG_HEADER([include/config.h])
+AC_CONFIG_HEADER([include/hexcalc-config.h])
 
 # Checks for programs.
 AC_PROG_CXX
