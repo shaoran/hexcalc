@@ -95,12 +95,14 @@ const char *__cmd_help_str =
 "\n"
 "options:\n"
 "    -h,   --help            prints this help\n"
+#ifdef HAVE_LIBREADLINE
 "    -i,   --history FILE    loads the input history\n"
 "                            from FILE. By default\n"
 "                            ~/.hexcalc_history is used\n"
 "                            Pass an empty string if you\n"
 "                            do not wish to save the\n"
 "                            history at all.\n"
+#endif
 "\n"
 "specs file\n"
 "    The path of the specs file conatining the register.\n"
@@ -118,16 +120,26 @@ int main(int argc, char *argv[]){
 
     static struct option long_options[] = {
         {"help",    no_argument,       NULL, 'h'},
+#ifdef HAVE_LIBREADLINE
         {"history", required_argument, NULL, 'i'},
+#endif
         {NULL,      0,                 NULL, 0},
     };
 
+#ifdef HAVE_LIBREADLINE
     std::string history_file = "";
+#endif
     std::string specs_file = "";
 
     while(1)
     {
-        int c = getopt_long(argc, argv, "hi:", long_options, &option_index);
+#ifdef HAVE_LIBREADLINE
+        const char *opts = "hi:";
+#else
+        const char *opts = "i:";
+#endif
+
+        int c = getopt_long(argc, argv, opts, long_options, &option_index);
 
         if(c == -1)
             break;
@@ -139,6 +151,7 @@ int main(int argc, char *argv[]){
                 return 0;
                 break;
 
+#ifdef HAVE_LIBREADLINE
             case 'i':
                 if(optarg == NULL)
                 {
@@ -149,6 +162,7 @@ int main(int argc, char *argv[]){
 
                 history_file = optarg;
                 break;
+#endif
 
             default:
                 std::cerr << "Invalid option" << std::endl;
@@ -419,10 +433,16 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
 
     /* initialise command line reader and print welcome text *********/
 
+#ifdef HAVE_LIBREADLINE
     command_line_reader R(256, 2, prompt, history_file);
+#else
+    command_line_reader R(256, 2);
+#endif
     cout << version_text << endl << endl << intro << flush;
 
+#ifdef HAVE_LIBREADLINE
     R.set_width(A.get_width());
+#endif
 
     /* run the main loop, consisiting of
      * printing prompt, reading command, executing, for ever *********/
@@ -433,7 +453,9 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
         try{
             RI = new reg_info(specs_file.c_str());
             A.print_registers(RI);
+#ifdef HAVE_LIBREADLINE
             R.set_registers(*RI);
+#endif
             std::cout << std::endl;
         }//try
         catch(exception &e){
@@ -446,6 +468,9 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
 
         cout << endl;
     l_read_command_line:
+#ifndef HAVE_LIBREADLINE
+        cout << prompt << flush;
+#endif
         try{R >> command;}
         catch(signal e){
             if(e == EMPTY_COMMAND){
@@ -613,7 +638,9 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
                     }//if
                     A.set_width(R.get_num(0));
                     A.print();
+#ifdef HAVE_LIBREADLINE
                     R.set_width(R.get_num(0));
+#endif
                 }__print_errmsg;
             }else{
                 if(A.get_width()){
@@ -753,7 +780,9 @@ accumulator to \"47\", you can enter \"%s%s2f%s\" (hex), \"%s%s'b101111%s\" (bin
                 RI = NULL;
                 try{
                     RI = new reg_info(R.get_string(0));
+#ifdef HAVE_LIBREADLINE
                     R.set_registers(*RI);
+#endif
                     A.print_registers(RI);
                 }//try
                 catch(exception &e){
