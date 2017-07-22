@@ -161,8 +161,15 @@ void command_line_reader::operator>>(char &command){
     if(buffer == NULL)
         throw(exceptions::EOF_COMMAND);
 
-    add_history(buffer);
     int blen = strlen(buffer);
+
+    char tmp[blen + 1];
+    strcpy(tmp, buffer);
+    rl_iface::trim(tmp);
+
+    // ignore empty lines
+    if(*tmp)
+        add_history(buffer);
 
     for(int idx = 0; idx < blen ; ++idx)
     {
