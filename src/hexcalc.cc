@@ -91,22 +91,22 @@ using namespace exceptions;
 #define __print_errmsg catch(signal e){__error << errmsg[e];}
 
 const char *__cmd_help_str =
-"usage: hexcalc [options] [specs file]\n\
-\n\
-options:\n\
-    -h,   --help            prints this help\n\
-    -i,   --history FILE    loads the input history\n\
-                            from FILE. By default\n\
-                            ~/.hexcalc_history is used\n\
-                            Pass an empty string if you\n\
-                            do not wish to save the\n\
-                            history at all.\n\
-\n\
-specs file\n\
-    The path of the specs file conatining the register.\n\
-    If this file is passed it will automatically load it.\n\
-    Otherwise you'll have to use the 'R' command to load\n\
-    another specs file.";
+"usage: hexcalc [options] [specs file]\n"
+"\n"
+"options:\n"
+"    -h,   --help            prints this help\n"
+"    -i,   --history FILE    loads the input history\n"
+"                            from FILE. By default\n"
+"                            ~/.hexcalc_history is used\n"
+"                            Pass an empty string if you\n"
+"                            do not wish to save the\n"
+"                            history at all.\n"
+"\n"
+"specs file\n"
+"    The path of the specs file conatining the register.\n"
+"    If this file is passed it will automatically load it.\n"
+"    Otherwise you'll have to use the 'R' command to load\n"
+"    another specs file.";
 
 /*** main ********************************************************************/
 
