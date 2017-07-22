@@ -15,4 +15,8 @@ hexcalc_SOURCES = src/command-line-reader.cc\
                   include/exceptions.hh\
                   include/history-index.hh
 
+if WITH_READLINE
+hexcalc_SOURCES += src/readline-interface.cc include/readline-interface.hh
+endif
+
 hexcalc_CXXFLAGS = -Wall -O3 -std=c++14 -I$(srcdir)/include $(AM_CXXFLAGS)

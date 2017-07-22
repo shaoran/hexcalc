@@ -32,6 +32,7 @@ AS_IF([test "x${with_readline}" != "xno"], [
 	AC_CHECK_LIB([readline], [readline],, [AC_MSG_ERROR([Library readline not found. Install it from http://directory.fsf.org/readline.html])])
 ])
 
+AM_CONDITIONAL([WITH_READLINE], [test "x${ac_cv_lib_readline_readline}" = "xyes"])
 
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
