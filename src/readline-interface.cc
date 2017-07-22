@@ -278,6 +278,29 @@ char *rl_iface::ilL_command_generator(const char *text, int state)
 
 char *rl_iface::equals_command_generator(const char *text, int state)
 {
+    static const char *cmds[] = {
+        "'b",
+        "'d",
+        NULL,
+    };
+
+    if(__rl_cmdline_arg_index > 2)
+        return NULL;
+
+    static int idx, len;
+
+    if(state == 0)
+    {
+        idx = 0;
+        len = strlen(text);
+    }
+
+    while(const char *h = cmds[idx++])
+    {
+        if(strncmp(text, h, len) == 0)
+            return strdup(h);
+    }
+
 	return NULL;
 }
 
