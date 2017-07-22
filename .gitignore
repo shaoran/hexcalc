@@ -10,8 +10,8 @@ config.status
 configure
 hexcalc
 *.o
-include/hexcalc-config.h
-include/hexcalc-config.h.in
-include/hexcalc-config.h.in~
+include/hexcalc-config.hh
+include/hexcalc-config.hh.in
+include/hexcalc-config.hh.in~
 include/stamp-h1
 src/.dirstamp
