@@ -21,6 +21,8 @@
  *
  ******************************************************************* aczutro */
 
+#include <hexcalc-config.hh>
+
 #include <iostream>
 
 #include <cstring>
@@ -37,8 +39,6 @@ using namespace exceptions;
 
 
 /*** macros ******************************************************************/
-
-#define HEXCALC_VERSION "2.0"
 
 #define HELP_BUFFER_LENGTH 1800
 
@@ -386,7 +386,7 @@ int main(int argc, char *argv[]){
 %sThis program is free software: you can redistribute it and/or modify%s\n\
 %sit under the terms of the GPLv3+ <http://www.gnu.org/licences>.%s\n\
 %sThis program is distributed WITHOUT ANY WARRANTY.%s",
-                BOLD, C_PROMPT, DEFF, C_PROMPT, HEXCALC_VERSION, DEFF,
+                BOLD, C_PROMPT, DEFF, C_PROMPT, VERSION, DEFF,
                 C_PROMPT, DEFF,
                 C_PROMPT, DEFF,
                 C_PROMPT, DEFF,
