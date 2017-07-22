@@ -138,9 +138,14 @@ void command_line_reader::operator>>(char &command){
     {
         if(sigsetjmp(__env, 1) != 0)
         {
+
             rl_cleanup_after_signal();
             rl_free_line_state();
             std::cout << std::endl;
+
+            if(*rl_line_buffer)
+                throw(exceptions::EMPTY_COMMAND);
+
             // quit program after ctrl+c, write history and do clean up
             command = 'q';
             return;
