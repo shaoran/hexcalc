@@ -55,6 +55,8 @@ Print accumulator
 \fBI\fR
 .IP
 Toogle indices
+
+.HP
 \fBModification commands\fR
 .HP
 \fBw\fR \fIWIDTH\fR 
@@ -64,3 +66,42 @@ Set accumulator's width. Range: 1 - 16
 \fBw\fR
 .IP
 Print current width
+.HP
+\fBi\fR \fIINDEX\fR
+.IP
+Flip bit at index \fIINDEX\fR
+.HP
+\fBi\fR \fIFROM\fR \fITO\fR
+.IP
+Flip bit range [\fIFROM\fR:\fITO\fR]
+.HP
+\fBi\fR
+.IP
+Flip all bits
+
+.HP
+\fBHighlighting commands\fR
+.HP
+\fBL\fR \fIINDEX\fR
+.IP
+Highlight bit permanently at index \fIINDEX\fR
+.HP
+\fBL\fR \fIFROM\fR \fITO\fR
+.IP
+Highlight bit range [\fIFROM\fR:\fITO\fR] permanently
+.HP
+\fBL\fR
+.IP
+Turn off permanently highlighting
+.HP
+\fB=\fR { \fIHEX_No\fR | \fI'bBIN_No\fR | \fI'dDEC_No\fR }
+.IP
+Set value of permanently highlighted bits.
+.HP
+\fBl\fR \fIINDEX\fR
+.IP
+Highlight bit once at index \fIINDEX\fR
+.HP
+\fBl\fR \fIFROM\fR \fITO\fR
+.IP
+Highlight bit range [\fIFROM\fR:\fITO\fR] once
