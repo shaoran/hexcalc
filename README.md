@@ -150,4 +150,4 @@ $ sudo make install
 If you get the sources from git, then you first have to execute `autoreconf -i`. This
 will generate the `configure` script for building the project.
 
-A sample of the specs file is found under `${datadir}/hexcalc/specs/sample-spec
+A sample of the specs file is found under `${datadir}/hexcalc/specs/sample-spec`.
