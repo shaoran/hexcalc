@@ -1,0 +1,66 @@
+.\" Copyright 2017 by Pablo Yanez Trujillo <shaoran@sakuranohana.org>
+.\" 
+.\" This is free software. Please read the file COPYING if you
+.\" want to use/edit/distribuite this source file.
+.\" This source file is protected by the GNU GPL-2
+.\" NOTE: There is NO  warranty; not even for MERCHANTABILITY or 
+.\" FITNESS FOR A PARTICULAR PURPOSE.
+.TH "hexcalc" "5" "July 2017" "Version 2.1.0" "Hexcalc"
+.SH "SINOPSYS"
+
+.B hexcalc
+[\fIOPTIONS\fR] \fR[\fIspecs file\fR]
+
+.SH "DESCRIPTION"
+
+.B hexcalc
+is a handy hex calculator and register contents visualiser for assembly programmers.
+
+.B hexcalc
+has a command line interface where you type in your commands. Compiling \fBhexcalc\fR
+with the \fBGNU Readline\fR library, makes the command line interface behave
+like the command line interface of the \fIbash\fR-shell (or any other \fBreadline\fR
+enabled program). It has a built-in history and you can access it using the the
+arrow keys or any other keyboard combination. You can also add your own key bindings
+by adding them in \fI~/.inputrc\fR. It also support conditionals on the \fI~/.inputrc\fR,
+the application name is \fBhexcalc\fR.
+
+.HP
+\fB\-i\fR, \fB\-\-history\fR=\fIFILE\fR
+.IP
+The path of the history file. By default \fI~/.hexcalc_history\fR. This option
+is only available when compiled with \fBGNU Readline\fR.
+
+.HP
+\fB\-h\fR, \fB\-\-help\fR
+.IP
+Shows the help
+
+.HP
+\fBspecs file\fR
+.IP
+A special file containing the specs of several cpu registers. If this argument is passed,
+it will be automatically loaded (See the \fBR\fR command).
+.IP
+To learn more about this file take a look at \fI${datadir}/hexcalc/specs/sample-spec\fR.
+
+.SH "COMMANDS"
+
+\fBOutput command\fR
+.HP
+\fBp\fR
+.IP
+Print accumulator
+.HP
+\fBI\fR
+.IP
+Toogle indices
+\fBModification commands\fR
+.HP
+\fBw\fR \fIWIDTH\fR 
+.IP
+Set accumulator's width. Range: 1 - 16
+.HP
+\fBw\fR
+.IP
+Print current width
