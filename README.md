@@ -142,17 +142,12 @@ COMMAND` to get detailed info on a particular command.
 
 ## Installing
 
-Use the provided `Makefile` to compile this project.
-
 ```shell
-cd /root/of/hexcalc/project/bin/
-make
+$ ./configure && make
+$ sudo make install
 ```
 
-That will create the executable file `hexcalc` in the `bin` directory.  That
-directory also contains a file called `specs` which contains the definition of
-four registers of a fictive CPU.  This file is provided as an example for how
-to use command `s`.
+If you get the sources from git, then you first have to execute `autoreconf -i`. This
+will generate the `configure` script for building the project.
 
-Alternatively, feel free to write your own `Makefile` or to use your favourite
-IDE to compile the application.
+A sample of the specs file is found under `${datadir}/hexcalc/specs/sample-spec
